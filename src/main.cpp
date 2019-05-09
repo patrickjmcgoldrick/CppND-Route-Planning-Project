@@ -10,8 +10,8 @@
 
 using namespace std::experimental;
 
-static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
-{   
+static std::optional<std::vector<std::byte>> ReadFile(const std::string &path) {
+
     std::ifstream is{path, std::ios::binary | std::ios::ate};
     if( !is )
         return std::nullopt;
@@ -27,8 +27,30 @@ static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
     return std::move(contents);
 }
 
-int main(int argc, const char **argv)
-{    
+float getFloat(std::string name) {
+    char input [20];
+
+    float ret_val = -0.1f;  // start with invalid value
+
+    while (true) {
+
+        std::cout << "Please enter " << name << ": ";
+        std::cin.getline(input, 20);
+
+        ret_val = (float)atof(input);
+
+        if (ret_val < 0.0f || ret_val > 100.0f) {
+            std::cout << "Please enter a number between 0-100.\n";
+        } else {
+            return ret_val;
+        }
+
+    }
+
+}
+
+int main(int argc, const char **argv) {
+
     std::string osm_data_file = "";
     if( argc > 1 ) {
         for( int i = 1; i < argc; ++i )
@@ -37,6 +59,7 @@ int main(int argc, const char **argv)
     }
     else {
         std::cout << "Usage: [executable] [-f filename.osm]" << std::endl;    
+	return 0;
     }
     
     std::vector<std::byte> osm_data;
@@ -53,12 +76,16 @@ int main(int argc, const char **argv)
     // TODO: Declare floats `start_x`, `start_y`, `end_x`, and `end_y` and get
     // user input for these values using std::cin. Pass the user input to the
     // RoutePlanner object below.
+ 
+    float start_x = getFloat("start_x");
+    float start_y = getFloat("start_y");
+    float end_x = getFloat("end_x");
+    float end_y = getFloat("end_y");
 
-    // Build Model.
     RouteModel model{osm_data};
 
     // Perform search and render results.
-    RoutePlanner route_planner{model, 10, 10, 90, 90};
+    RoutePlanner route_planner{model, start_x, start_y, end_x, end_y};
     
     route_planner.AStarSearch();
     auto distance = route_planner.GetDistance();
