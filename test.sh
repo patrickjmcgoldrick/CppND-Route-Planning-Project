@@ -1,4 +1,6 @@
 #!/bin/bash
+# from:  https://github.com/dbecad/CppND-Route-Planning-Project
+
 rm -rf ./bin
 rm -rf ./build
 
