@@ -22,12 +22,12 @@ class RouteModel : public Model {
 
         void FindNeighbors();
 
+        /**
+         * Calculate euclidian distance
+         * from current node to 'other' node
+         */
         float distance (Node other) const {
-          double x2 = other.x;
-          double y2 = other.y;
-          // calculate euclidian distance
-          // from current node to 'other' node
-          return std::sqrt( std::pow((x-x2),2) + std::pow((y - y2),2) );
+          return std::sqrt( std::pow((x-other.x),2) + std::pow((y - other.y),2) );
         }
 
         Node(){}
